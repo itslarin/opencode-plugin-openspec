@@ -1,17 +1,16 @@
-import type { Plugin } from "@opencode-ai/plugin";
-import { createConfigHook } from "./config";
+import { Plugin } from "@opencode/plugin";
+import { createAgentConfig } from "./config";
 import { isOpenSpecProject } from "./utils/detection";
 
-const OpenSpecPlugin: Plugin = async (ctx) => {
-  const isActive = await isOpenSpecProject(ctx);
+export default Plugin.define({
+  id: "opencode-plugin-openspec",
+  async setup(ctx) {
+    const directory = ctx.location.directory;
+    if (!isOpenSpecProject(directory)) return;
 
-  if (!isActive) {
-    return {};
-  }
-
-  return {
-    config: createConfigHook(ctx),
-  };
-};
-
-export default OpenSpecPlugin;
+    const agent = createAgentConfig();
+    await ctx.agent.transform((editor) => {
+      editor.update("openspec-plan", agent);
+    });
+  },
+});
