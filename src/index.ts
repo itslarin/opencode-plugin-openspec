@@ -10,7 +10,9 @@ export default Plugin.define({
 
     const agent = createAgentConfig();
     await ctx.agent.transform((editor) => {
-      editor.update("openspec-plan", agent);
+      editor.update("openspec-plan", (target) => {
+        Object.assign(target, agent);
+      });
     });
   },
 });

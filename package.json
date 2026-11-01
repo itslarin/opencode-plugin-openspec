@@ -37,5 +37,8 @@
   "devDependencies": {
     "bun-types": "latest",
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@opencode/plugin": "^2.2.5"
   }
 }
